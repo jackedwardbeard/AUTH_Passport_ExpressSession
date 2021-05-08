@@ -4,6 +4,11 @@ A local authentication system Using a React/Node/Express/MongoDB stack.
 # To make it work
 You need to change the mongoDB URL (in server.js) to your own, with your database username and password included.
 
+# To-Dos / Improvements
+- Add an option to reset password (e.g. through nodemailer maybe)
+- Add a confirmation email before adding the user to the DB when registering
+- Only show a logout button if there is a flag indicating a user is logged in
+
 # To start frontend
 ```bash
 cd frontend
