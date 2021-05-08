@@ -1,0 +1,57 @@
+.navContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: black;
+    height: max(100px, 10vh);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    overflow: hidden;
+}
+
+.logo_link {
+    height: 90%;
+    overflow: hidden;
+}
+
+.logo {
+    height: 90%;
+}
+
+.links {
+    list-style: none;
+    display: flex;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+    .links {
+    display: none;
+    }
+}
+
+.nav_link {
+    text-decoration: none;
+    color: white;
+    margin: max(20px, 2vw);
+}
+
+.mobileIcon {
+    display: none;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+    .mobileIcon{
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-100%, 60%);
+    margin-top: max(1.25vh, 12.5px);
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: white;
+    }
+}

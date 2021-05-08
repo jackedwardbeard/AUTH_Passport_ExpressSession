@@ -1,0 +1,35 @@
+.pageContainer {
+    height: 90vh;
+    background-color:lightseagreen;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.inputBox {
+    text-align: center;
+    height: max(30px, 3vh);
+    width: max(200px,20vw);
+    margin: 5px;
+}
+
+.button {
+    width: max(150px, 15vw);
+    height: max(30px, 3vh);
+    margin: 20px;
+}
+
+.title {
+    color: white;
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: max(30px, 3vh);
+}
