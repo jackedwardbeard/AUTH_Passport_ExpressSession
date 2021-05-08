@@ -133,7 +133,7 @@ app.get('/getUser', (req, res) => {
 
 app.get('/logout', (req, res) => {
     req.logout(req.user)
-    res.send('You have uccessfully logged out!')
+    res.send('You have successfully logged out!')
 })
 
 // ******************************************************************************************************************
