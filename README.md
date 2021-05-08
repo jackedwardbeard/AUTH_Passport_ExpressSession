@@ -30,10 +30,10 @@ MongoDB (database)
 
 # Frontend Dependencies
 ```bash
-npm install react-router-dom
+npm install react-router-dom (for making react router work)
 ```
 ```bash
-npm install axios
+npm install axios (for exchanging HTTP requests between frontend and backend)
 ```
 
 # Backend Dependencies
