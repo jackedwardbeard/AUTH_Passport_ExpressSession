@@ -7,7 +7,7 @@ You need to change the mongoDB URL (in server.js) to your own, with your databas
 # To-Dos / Improvements
 - Add an option to reset password (e.g. through nodemailer maybe)
 - Add a confirmation email before adding the user to the DB when registering
-- Only show a logout button if there is a flag indicating a user is logged in
+- Only show a logout button if there is a flag indicating a user is logged in (e.g. if req.user != null)
 
 # To start frontend
 ```bash
