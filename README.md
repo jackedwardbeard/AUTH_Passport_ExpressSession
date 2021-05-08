@@ -59,5 +59,5 @@ npm install mongoose (mongoose is an ODM that makes writing schemas for MongoDB 
 npm install passport (passport deals with strategies for authenticating users making POST requests from the login page)
 ```
 ```bash
-npm install passport-local (deals with local strategy for authentication (i.e. using a local username and password)
+npm install passport-local (deals with local strategy for authentication (i.e. using a local username and password))
 ```
