@@ -17,9 +17,9 @@ npm start
 ```
 
 # Description
-```bash
+
 I was working on authentication for another project, and decided it would be helpful to encapsulate this authentication stack into a little package for learning purposes.
-```
+
 
 # The stack
 ```bash
