@@ -2,7 +2,7 @@
 A local authentication system Using a React/Node/Express/MongoDB stack.
 
 # To make it work
-You need to change the mongoDB URL to your own, with your database username and password.
+You need to change the mongoDB URL (in server.js) to your own, with your database username and password included.
 
 # To start frontend
 ```bash
