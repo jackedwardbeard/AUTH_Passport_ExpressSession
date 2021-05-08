@@ -27,7 +27,7 @@ const Register = () => {
                 confirmPassword: registerConfirmPassword
             },
             withCredentials: true,
-            url: 'http://localhost:4000/register'
+            url: 'http://localhost:5000/register'
         }).then((res) => {console.log(res)}) //take the response from the server and console log it
     };
 
@@ -36,7 +36,7 @@ const Register = () => {
             Axios({
                 method: "GET",
                 withCredentials: true,
-                url: "http://localhost:4000/logout"
+                url: "http://localhost:5000/logout"
             }).then((res) => {
                 console.log(res);
             })

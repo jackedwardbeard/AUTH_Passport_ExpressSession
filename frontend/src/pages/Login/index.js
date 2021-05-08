@@ -23,7 +23,7 @@ const Login = () => {
                 password: loginPassword
             },
             withCredentials: true,
-            url: 'http://localhost:4000/login'
+            url: 'http://localhost:5000/login'
         }).then((res) => {console.log(res)})
     };
     const getUser = (e) => {
@@ -31,7 +31,7 @@ const Login = () => {
         Axios({
             method: "GET",
             withCredentials: true,
-            url: "http://localhost:4000/getUser",
+            url: "http://localhost:5000/getUser",
           }).then((res) => {
             // extract the user's email (res.data) from our current session data (res)
             setSessionData(res.data)
@@ -44,7 +44,7 @@ const Login = () => {
         Axios({
             method: "GET",
             withCredentials: true,
-            url: "http://localhost:4000/logout"
+            url: "http://localhost:5000/logout"
         }).then((res) => {
             console.log(res);
         })

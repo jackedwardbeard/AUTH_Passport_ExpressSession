@@ -138,7 +138,7 @@ app.get('/logout', (req, res) => {
 
 // ******************************************************************************************************************
 
-// Make the server listen to a specific port (4000 in this case)
-app.listen(4000, () => {
-    console.log('Server is listening on port 4000');
+// Make the server listen to a specific port (5000 in this case)
+app.listen(5000, () => {
+    console.log('Server is listening on port 5000');
 })
