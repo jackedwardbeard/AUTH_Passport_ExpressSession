@@ -1,5 +1,6 @@
 # MERN_Authentication
 A local authentication system Using a React/Node/Express/MongoDB stack.
+* Note: req.user is shorthand/equivalent to req.session.user (using expression session).
 
 # To make it work
 You need to change the mongoDB URL (in server.js) to your own, with your database username and password included.
