@@ -82,7 +82,7 @@ const Login = () => {
     <div className='pageContainer'>
         <form className='form'> 
             <p className='title'>
-                Sign In
+                Login
             </p>
             <input 
                 className='inputBox' 
@@ -96,9 +96,7 @@ const Login = () => {
                 placeholder='Password'
                 onChange={e => setLoginPassword(e.target.value)}
             />
-            <button onClick={login} className='buttonLogin'>
-                Sign In
-            </button>
+            <Button variant='contained' onClick={login} style={{margin: '30px'}}>Login</Button>
             <a className='register_link'>
                 <Link to='/register'>Not a member? Register now.</Link>
             </a>

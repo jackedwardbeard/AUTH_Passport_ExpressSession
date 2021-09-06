@@ -22,14 +22,6 @@
     margin: 5px;
 }
 
-.buttonLogin {
-    width: max(150px, 15vw);
-    height: max(30px, 3vh);
-    margin-top: 10px;
-    margin-bottom: 30px;
-    border-radius: 10px;
-}
-
 .title {
     color: white;
     font-size: max(1.5rem, 3vmin);

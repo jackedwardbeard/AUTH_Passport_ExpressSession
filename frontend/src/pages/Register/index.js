@@ -107,9 +107,7 @@ const Register = () => {
                     placeholder='Confirm Password'
                     onChange={e => setRegisterConfirmPassword(e.target.value)}
                 />
-                <button onClick={register} className='registerButton'>
-                    Register
-                </button>
+                <Button variant='contained' onClick={register} style={{margin: '30px'}}>Register</Button>
                 <a className='register_link'>
                     <Link to='/login'>Already a member? Sign in.</Link>
                 </a>

@@ -63,7 +63,7 @@ const ConfirmEmail = (props) => {
                 <p className='title'>Email Confirmation</p>
                 <p className='confirmEmailText'>To finalise your registeration, click the button below.</p>
                 <div className='confirmEmailButtonContainer'>
-                    <button className='confirmEmailButton' type="button" onClick={confirmUser}>Confirm Email</button>
+                    <Button variant='contained' onClick={confirmUser} style={{margin: '30px'}}>Confirm Email</Button>
                 </div>
             </div>
             <Dialog
