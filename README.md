@@ -6,7 +6,7 @@ A local authentication system Using a React/Node/Express/MongoDB stack.
 You need to change the mongoDB URL (in server.js) to your own, with your database username and password included.
 
 # To-Dos / Improvements
-- Add an option to reset password (easy enough, send another email and only update the password after a button is clicked (linked to by the email)
+- Add an option to reset password (easy enough, send another email and only update the password after a button is clicked (linked to by the email))
 - Add a confirmation email before adding the user to the DB when registering (same as above)
 - Only show a logout button if there is a flag indicating a user is logged in (e.g. if req.user != null)
 - Add more passport strategies (e.g. a google strategy for logging in/registering with google instead of a local email/password)
