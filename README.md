@@ -14,12 +14,14 @@ You need to change the mongoDB URL (in server.js) to your own, with your databas
 # To start frontend
 ```bash
 cd frontend
+npm install
 npm start
 ```
 
 # To start backend (with nodemon)
 ```bash
 cd backend
+npm install
 npm start
 ```
 
@@ -33,11 +35,4 @@ I was working on authentication for another project, and decided it would be hel
 React (frontend)
 Node/Express (backend)
 MongoDB (database)
-```
-
-# To start
-```bash
-1. cd frontend/backend
-2. npm install
-3. npm start
 ```
