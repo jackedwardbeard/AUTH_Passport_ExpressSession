@@ -6,8 +6,8 @@ A local authentication system Using a React/Node/Express/MongoDB stack.
 You need to change the mongoDB URL (in server.js) to your own, with your database username and password included.
 
 # To-Dos / Improvements
-- Add an option to reset password (e.g. through nodemailer maybe)
-- Add a confirmation email before adding the user to the DB when registering
+- Add an option to reset password (easy enough, send another email and only update the password after a button is clicked (linked to by the email)
+- Add a confirmation email before adding the user to the DB when registering (same as above)
 - Only show a logout button if there is a flag indicating a user is logged in (e.g. if req.user != null)
 - Add more passport strategies (e.g. a google strategy for logging in/registering with google instead of a local email/password)
 
@@ -35,36 +35,9 @@ Node/Express (backend)
 MongoDB (database)
 ```
 
-# Frontend Dependencies
+# To start
 ```bash
-npm install react-router-dom (for making react router work)
-```
-```bash
-npm install axios (for exchanging HTTP requests between frontend and backend)
-```
-
-# Backend Dependencies
-```bash
-npm install bcryptjs (for encrypting registering users' passwords)
-```
-```bash
-npm install cookie-parser (for parsing cookies)
-```
-```bash
-npm install cors (cross origin resource sharing)
-```
-```bash
-npm install express (our backend server uses express, which is built on top of node.js)
-```
-```bash
-npm install express-session (to allow for users to have a session once logged in)
-```
-```bash
-npm install mongoose (mongoose is an ODM that makes writing schemas for MongoDB extremely easy)
-```
-```bash
-npm install passport (passport deals with strategies for authenticating users making POST requests from the login page)
-```
-```bash
-npm install passport-local (deals with local strategy for authentication (i.e. using a local username and password))
+1. cd frontend/backend
+2. npm install
+3. npm start
 ```
