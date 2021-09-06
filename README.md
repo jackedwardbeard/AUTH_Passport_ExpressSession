@@ -4,11 +4,11 @@ A local authentication system Using a React/Node/Express/MongoDB stack.
 
 # To make it work
 You need to create a backend .env file containing values for:
-MONGO_URL=yourConnectionStringHere
-SECRET=anySecretHere
-CLIENT_URL=http://localhost:3000
-EMAIL_USER=yourGmailAddress
-EMAIL_PASS=yourGmailPassword
+* MONGO_URL=yourConnectionStringHere
+* SECRET=anySecretHere
+* CLIENT_URL=http://localhost:3000
+* EMAIL_USER=yourGmailAddress
+* EMAIL_PASS=yourGmailPassword
 
 # To-Dos / Improvements
 - Add an option to reset password (same process as register confirmation email)
