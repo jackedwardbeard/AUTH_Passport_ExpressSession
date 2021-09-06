@@ -11,18 +11,16 @@
 }
 
 .logo_link {
-    height: 90%;
-    overflow: hidden;
+    height: 100%;
 }
 
 .logo {
-    height: 90%;
+    height: 100%;
 }
 
 .links {
     list-style: none;
     display: flex;
-    overflow: hidden;
 }
 
 @media screen and (max-width: 768px) {
@@ -37,9 +35,12 @@
     margin: max(20px, 2vw);
 }
 
+.nav_link:hover {
+    color: lightseagreen;
+}
+
 .mobileIcon {
     display: none;
-    overflow: hidden;
 }
 
 @media screen and (max-width: 768px) {

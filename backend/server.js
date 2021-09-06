@@ -6,20 +6,13 @@ const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const User = require('./user')
+const sendEmail = require('./sendEmail'); // import function for sending an email
+
+// enable environment variables
+require('dotenv').config()
 
 // initialise backend
 const app = express()
-
-// connect to mongoose (an ODM/object document mapper) for mongoDB
-// this link (or the username and password) should be made private (e.g. as a .env variable) in production
-mongoose.connect(
-'mongodb+srv://[databaseUsernameGoesHereWithoutBrackets]:[databaseUserPasswordGoesHereWithoutBrackets]@cluster0.0g8h8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-{
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-},
-() => {console.log('Connected successfully to Mongoose!')}
-)
 
 // lets us get json data from req.body
 app.use(express.json());
@@ -35,85 +28,89 @@ app.use(cors({
 
 // sets up express-session
 app.use(session({
-    secret: 'secretcode',
+    secret: process.env.SECRET,
     resave: true,
     saveUninitialized: true
 }))
 
 // allows the parsing of cookies
-app.use(cookieParser('secretcode'))
+app.use(cookieParser(process.env.SECRET))
 
-// sets up our passport, and uses our passport config that we wrote
+// sets up our passport, and uses our passport config to set it up
 app.use(passport.initialize());
 app.use(passport.session());
 require('./passportConfig')(passport);
 
 
-// /login is an HTTP POST method. Client POSTS login form data to backend to be authenticated.
+// log the user in using local passport strategy
 app.post('/login', (req, res, next) => {
 
     // authenticate the user using our local passport strategy
     passport.authenticate('local', (err, user, info) => {
 
-        // if error, throw error
         if (err) {
-            throw err
+            res.send(err);
         };
 
-        // if a user is not returned, it means they couldn't be authenticated
+        // if authentication failed
         if (!user) {
             res.send('Your email or password is incorrect.')
         }
 
-        // if a user is returned, they have been authenticated, sign them in to a session.
+        // if authentication was successful
         else {
             req.login(user, (err) => {
 
-                // if error, throw error
                 if (err) {
                     throw err
                 }
 
-                // if no error, log in is successful
-                res.send('You have been authenticated! Hello there!');
-                
-                // once log-in is successful for a user, req.user is appended to any requests they make
-                console.log(req.user);
+                // if no errors, log in is successful, send user details to client
+                console.log('You have been authenticated! Hello there!');
+                res.send({"id": req.user.id, "firstName": req.user.firstName, "lastName": req.user.lastName, "email": req.user.email, "confirmedEmail": req.user.confirmedEmail});
             })
         }
-    })(req, res, next);
+    }) (req, res, next);
 })
 
 // /register is an HTTP POST method. Client POSTS register form data to backend to be created as a user.
 app.post('/register', (req, res) => {
 
-    // findOne looks for a document in the DB with an arbitrary condition to search for
-    // (email in this case), doc is the document we may or may not get back from this function
+    // check if a user with the given email already exists
     User.findOne({email: req.body.email}, async (err, doc) => {
 
-        // catch errors
         if (err) {
-            throw err
+            res.send(err);
         };
 
-        // if we find an existing user with matching email, console log it and don't allow a new user to be created
+        // if user already exists, don't register
         if (doc) {
-            res.send('A user already exists with that email!')
+            res.send('A user already exists with that email!');
         }
 
-        // if there is no matching email in any existing DB documents, make a new user in the DB
+        // if user doesn't exist, register a new user
         if (!doc) {
             const pword = req.body.password;
             const pwordConfirm = req.body.confirmPassword;
             // encrypt the password the user gives, so it is not stored as plaintext in the DB
             const hashedPword = await bcrypt.hash(req.body.password, 10);
+
             // if passwords in the register form match and there is no existing email in the DB, create a new user
-            if (pword == pwordConfirm) {
+            if (pword === pwordConfirm) {
                 const newUser = new User({
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
                     email: req.body.email,
                     password: hashedPword,
+                    confirmedEmail: false
                 });
-                await newUser.save();
+
+                // get details (including uuid) of this newly registered user
+                const savedNewUser = await newUser.save();
+                
+                // send confirmation email with email address and uuid attached
+                sendEmail(req.body.email, savedNewUser._id);
+
                 res.send('Registered into DB successfully!');
             }
             
@@ -121,21 +118,71 @@ app.post('/register', (req, res) => {
                 res.send('Passwords mismatch! Could not register.')
             }
         }
-    })
+    });
 })
 
-// /user is an HTTP GET method. Client asks to GET data from the backend, which communicates with the DB to find the current user's details.
+// once the button for email confirmation is clicked, update the DB to mark the user's email as confirmed
+app.post('/confirmEmail', (req, res) => {
+
+    const userID = req.body.userid;
+    let confirmedEmail = null;
+
+    console.log('got incoming id:', userID);
+
+    // if email hasn't been confirmed
+    User.findById(userID, function (err, result) {
+
+        if (err) {
+            console.log(err);
+        }
+
+        else {
+            // only update if email isn't already confirmed
+            confirmedEmail = result.confirmedEmail;
+            
+            if (confirmedEmail === false) {
+                User.findByIdAndUpdate(
+                    { _id: userID },
+                    { confirmedEmail: true },
+                    (err, result) => {
+                      if (err) {
+                        console.log(err);
+                        res.send(err);
+                      } 
+                      else {
+                        console.log(result);
+                        res.send("Email successfully confirmed!");
+                      }
+                    }
+                );
+            }
+        
+            // if it has
+            else {
+                res.send('Email already confirmed!');
+            }
+        }
+    });
+
+    console.log('confirmed email:', confirmedEmail)
+    
+})
+
+// return logged-in user data
 app.get('/getUser', (req, res) => {
     res.send(req.user);
 });
 
-// log the user out
+// log the user out (end the express session)
 app.get('/logout', (req, res) => {
     req.logout(req.user)
     res.send('You have successfully logged out!')
 })
 
-// Make the server listen to a specific port (5000 in this case)
-app.listen(5000, () => {
-    console.log('Server is listening on port 5000');
-})
+// make the server listen to a specific port (5000 in this case)
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => app.listen(5000, () => console.log('Server Running on Port 5000, Connected to DB')))
+  .catch((error) => console.log(`${error} did not connect`));
+
+// lets us use certain 'deprecated' mongoose operations
+mongoose.set('useFindAndModify', false);

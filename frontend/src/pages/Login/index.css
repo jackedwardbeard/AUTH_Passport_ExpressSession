@@ -1,10 +1,11 @@
 .pageContainer {
     height: 90vh;
     background-color:lightseagreen;
-    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 30px;
+    overflow: hidden;
 }
 
 .form {
@@ -21,15 +22,19 @@
     margin: 5px;
 }
 
-.button {
+.buttonLogin {
     width: max(150px, 15vw);
     height: max(30px, 3vh);
-    margin: 20px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    border-radius: 10px;
 }
 
 .title {
     color: white;
-    font-size: 3rem;
+    font-size: max(1.5rem, 3vmin);
     text-align: center;
     margin-bottom: max(30px, 3vh);
+    margin-left: 30px;
+    margin-right: 30px;
 }

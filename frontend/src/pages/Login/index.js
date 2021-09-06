@@ -1,84 +1,126 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import './index.css'
-import Navbar from '../../components/navbar'
 import { Link } from 'react-router-dom'
-import Axios from 'axios'
+import axios from 'axios'
+import { UserContext } from '../../Context/User'
+import { useHistory } from 'react-router-dom'
+import Button from '@material-ui/core/Button'
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 
 const Login = () => {
+
+    // used to redirect to home page upon successful login
+    const history = useHistory();
 
     // state for tracking login form input
     const [loginEmail, setLoginEmail] = useState('')
     const [loginPassword, setLoginPassword] = useState('')
 
-    // state for holding user session data
-    const [sessionData, setSessionData] = useState(null)
+    const [user, setUser] = useContext(UserContext);
 
-    // functions for sending login form data to backend
-    const login = (e) => {
-    e.preventDefault()
-        Axios({
-            method: 'POST',
-            data: {
-                email: loginEmail,
-                password: loginPassword
-            },
-            withCredentials: true,
-            url: 'http://localhost:5000/login'
-        }).then((res) => {console.log(res)})
-    };
-    const getUser = (e) => {
-    e.preventDefault()
-        Axios({
-            method: "GET",
-            withCredentials: true,
-            url: "http://localhost:5000/getUser",
-          }).then((res) => {
-            // extract the user's email (res.data) from our current session data (res)
-            setSessionData(res.data)
-            console.log('The email of the currently logged in user is:', res.data)
-        })
+    // determine whether to redirect after closing dialog pop-up or not
+    const [resStatus, setResStatus] = useState(null);
+
+    // for dialog pop-ups
+    const [open, setOpen] = useState(false);
+    const [dialogText, setDialogText] = useState('');
+
+    // open dialog pop-up
+    const handleOpen = () => {
+        setOpen(true);
     }
 
-    const logout = (e) => {
-    e.preventDefault()
-        Axios({
-            method: "GET",
-            withCredentials: true,
-            url: "http://localhost:5000/logout"
-        }).then((res) => {
+    // close dialog pop-up
+    const handleClose = () => {
+        setOpen(false);
+
+        // if user's email has been confirmed, redirect to login
+        if (resStatus === 200) {
+            history.push('/');
+        }
+    }
+
+    // log user in (create session)
+    const login = async(e) => {
+        e.preventDefault()
+
+        const data = {
+            email: loginEmail,
+            password: loginPassword
+        }
+
+        // only allow login if a user isn't already logged in
+        if (!user) {
+            const res = await axios.post('http://localhost:5000/login', data, {withCredentials: true});
+            
+            // if login was successful (an object containing user details is returned)
+            if (typeof res.data === 'object') {
+                // update global user state to the newly logged in user
+                setUser(res.data);
+                setResStatus(200);
+                setDialogText('Successfully logged in!');
+                handleOpen();
+            }
+
+            // login was unsuccessful
+            else {
+                setDialogText('Your email or password is incorrect!');
+                handleOpen();
+            }
+
             console.log(res);
-        })
-    }
+        }
+        
+        else {
+            setDialogText('Log out before attempting to log in!');
+            handleOpen();
+        }
+    };
 
     return (
-    <>
-    <Navbar></Navbar>
+
     <div className='pageContainer'>
         <form className='form'> 
             <p className='title'>
                 Sign In
             </p>
             <input 
-            className='inputBox' 
-            type='text' 
-            placeholder='Email'
-            onChange={e => setLoginEmail(e.target.value)}
-            ></input>
+                className='inputBox' 
+                type='text' 
+                placeholder='Email'
+                onChange={e => setLoginEmail(e.target.value)}
+            />
             <input 
-            className='inputBox' 
-            type='password' 
-            placeholder='Password'
-            onChange={e => setLoginPassword(e.target.value)}
-            ></input>
-            <button onClick={login} className='button'>Sign In</button>
-            <button onClick={getUser} className='button'>Get User Details</button>
-            <button onClick={logout} className='button'>Logout</button>
+                className='inputBox' 
+                type='password' 
+                placeholder='Password'
+                onChange={e => setLoginPassword(e.target.value)}
+            />
+            <button onClick={login} className='buttonLogin'>
+                Sign In
+            </button>
             <a className='register_link'>
                 <Link to='/register'>Not a member? Register now.</Link>
             </a>
         </form>
+        <Dialog
+                open={open}
+                onClose={handleClose}
+            >
+                <DialogTitle> </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            { dialogText }
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Okay
+                        </Button>
+                    </DialogActions>
+            </Dialog>
     </div>
-    </>
+
     )
 };
 

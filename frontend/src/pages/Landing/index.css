@@ -1,6 +1,28 @@
-.landing_title {
+.landingTitle {
     color: white;
-    font-size: 3rem;
     text-align: center;
     margin-bottom: max(30px, 3vh);
+    font-size: max(1.5rem, 3vmin);
+}
+
+.landingSubTitle {
+    color: white;
+    text-align: center;
+    text-decoration: underline;
+    margin-bottom: max(30px, 3vh);
+    font-size: max(1.25rem, 2.5vmin);
+}
+
+.landingSubText {
+    color: white;
+    text-align: center;
+    margin-bottom: max(30px, 3vh);
+    font-size: max(1rem, 2vmin);
+}
+
+.landingRow1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }

@@ -1,0 +1,40 @@
+.mobileMenuContainerClicked {
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: black;
+}
+
+.mobileMenu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.mobileLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3vh;
+    text-decoration: none;
+    list-style: none;
+    transition: 0.2s ease-in-out;
+    color: white;
+    cursor: pointer;
+    margin: 50px 0;
+}
+
+.mobileLink:hover {
+    color: lightseagreen;
+}
+
+.mobileMenuContainerNotClicked {
+    display: none;
+}
