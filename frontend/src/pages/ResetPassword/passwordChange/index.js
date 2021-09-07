@@ -32,7 +32,7 @@ const PasswordChange = (props) => {
 
         // if password change was successful, redirect to login page
         if (resStatus === 200) {
-            history.pushState('/login')
+            history.push('/login')
         }
     }
 
@@ -112,7 +112,7 @@ const PasswordChange = (props) => {
             </Dialog>
             </div>
         </div>
-        
+
     )
 }
 
