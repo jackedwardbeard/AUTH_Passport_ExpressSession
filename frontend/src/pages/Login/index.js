@@ -97,9 +97,8 @@ const Login = () => {
                 onChange={e => setLoginPassword(e.target.value)}
             />
             <Button variant='contained' onClick={login} style={{margin: '30px'}}>Login</Button>
-            <a className='register_link'>
-                <Link to='/register'>Not a member? Register now.</Link>
-            </a>
+            <Link className='link' to='/register' style={{margin: '5px'}}>Not a member? Register now.</Link>
+            <Link className='link' to='/sendResetEmail' style={{margin: '5px'}}>Forgot your password?</Link>
         </form>
         <Dialog
                 open={open}
@@ -112,7 +111,7 @@ const Login = () => {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose} color="primary">
+                        <Button onClick={handleClose} color='primary'>
                             Okay
                         </Button>
                     </DialogActions>

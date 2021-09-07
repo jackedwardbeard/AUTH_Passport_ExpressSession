@@ -1,12 +1,12 @@
-const mongoose = require('mongoose'); //db
-const express = require('express'); //server
-const cors = require('cors'); //cross origin resource sharing
-const passport = require('passport');
-const bcrypt = require('bcryptjs');
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const User = require('./user')
-const sendEmail = require('./sendEmail'); // import function for sending an email
+const mongoose = require('mongoose'); // db operations
+const express = require('express'); // server
+const cors = require('cors'); // cross origin resource sharing
+const passport = require('passport'); // authentication strategies
+const bcrypt = require('bcryptjs'); // hashing/salting passwords
+const session = require('express-session'); // maintain user sessions
+const cookieParser = require('cookie-parser'); // parse cookies
+const User = require('./user') // db schema for a user
+const {sendConfirmationEmail, sendPasswordResetEmail} = require('./sendEmail'); // different templates for sending emails
 
 // enable environment variables
 require('dotenv').config()
@@ -22,7 +22,7 @@ app.use(express.urlencoded({
 
 // sets up cross origin resource sharing
 app.use(cors({
-    origin: "http://localhost:3000", // allows CORS from 'origin' - change to '*' to allow access from anywhere
+    origin: process.env.CLIENT_URL, // allows CORS from 'origin' - change to '*' to allow access from anywhere
     credentials: true
 }))
 
@@ -67,13 +67,14 @@ app.post('/login', (req, res, next) => {
 
                 // if no errors, log in is successful, send user details to client
                 console.log('You have been authenticated! Hello there!');
-                res.send({"id": req.user.id, "firstName": req.user.firstName, "lastName": req.user.lastName, "email": req.user.email, "confirmedEmail": req.user.confirmedEmail});
+                res.send({'id': req.user.id, 'firstName': req.user.firstName, 'lastName': req.user.lastName, 'email': req.user.email, 'confirmedEmail': req.user.confirmedEmail});
             })
         }
     }) (req, res, next);
 })
 
 // /register is an HTTP POST method. Client POSTS register form data to backend to be created as a user.
+// accepts form inputs from frontend register page
 app.post('/register', (req, res) => {
 
     // check if a user with the given email already exists
@@ -109,7 +110,7 @@ app.post('/register', (req, res) => {
                 const savedNewUser = await newUser.save();
                 
                 // send confirmation email with email address and uuid attached
-                sendEmail(req.body.email, savedNewUser._id);
+                sendConfirmationEmail(req.body.email, savedNewUser._id);
 
                 res.send('Registered into DB successfully!');
             }
@@ -122,6 +123,10 @@ app.post('/register', (req, res) => {
 })
 
 // once the button for email confirmation is clicked, update the DB to mark the user's email as confirmed
+// accepts a userid
+// e.g. data = {
+//      'userid': userid
+//    }
 app.post('/confirmEmail', (req, res) => {
 
     const userID = req.body.userid;
@@ -130,16 +135,17 @@ app.post('/confirmEmail', (req, res) => {
     console.log('got incoming id:', userID);
 
     // if email hasn't been confirmed
-    User.findById(userID, function (err, result) {
+    User.findById(userID, (err, result) => {
 
         if (err) {
-            console.log(err);
+            res.send("Error");
         }
 
         else {
-            // only update if email isn't already confirmed
+            
             confirmedEmail = result.confirmedEmail;
             
+            // only update if email isn't already confirmed
             if (confirmedEmail === false) {
                 User.findByIdAndUpdate(
                     { _id: userID },
@@ -151,13 +157,13 @@ app.post('/confirmEmail', (req, res) => {
                       } 
                       else {
                         console.log(result);
-                        res.send("Email successfully confirmed!");
+                        res.send('Email successfully confirmed!');
                       }
                     }
                 );
             }
         
-            // if it has
+            // if it has been confirmed already
             else {
                 res.send('Email already confirmed!');
             }
@@ -167,6 +173,78 @@ app.post('/confirmEmail', (req, res) => {
     console.log('confirmed email:', confirmedEmail)
     
 })
+
+// accepts an email
+// e.g. data = {
+//      'email': email 
+//   }
+app.post('/sendResetEmail', (req, res) => {
+    
+    const email = req.body.email;
+
+    // look for an existing user with the email input from the send reset email page
+    User.find({email: email}, (err, result) => {
+        
+        if (err) {
+            res.send('An error occured.');
+        }
+
+        else {
+
+            // if user was found
+            if (result && result.length > 0) {
+
+                // get user ID associated with incoming email address
+                const userID = result[0]._id;
+        
+                // send a password reset email with their userID as the URL parameter
+                sendPasswordResetEmail(email, userID);
+                
+                res.send('An email containing instructions on how to reset your password has been sent.');
+            }
+
+            else {
+                // if no user was found
+                res.send('No account was found linked to that email.');
+            }   
+        }
+    })
+});
+
+// accepts a userID and a new password
+// e.g. data = {
+//    'userid': userid,
+//    'newPassword': newPassword
+//    }
+app.post('/passwordChange', async(req, res) => {
+    
+    const userID = req.body.userid;
+    // hash and salt new password with bcrypt
+    const newPasswordHashed = await bcrypt.hash(req.body.newPassword, 10);
+
+    // find user associated with userid, update password
+    User.findOneAndUpdate({_id: userID}, {$set: {password: newPasswordHashed}}, (err, result) => {
+
+        if (err) {
+            console.log('An error occurred.');
+        }
+    
+        else {
+        
+            // if user found
+            if (result) {
+                res.send('Password successfully updated!');
+            }
+
+            // no user could be found with the given req userID
+            else {
+                res.send('Invalid userID provided.');
+            }
+        }
+        
+    });
+
+});
 
 // return logged-in user data
 app.get('/getUser', (req, res) => {

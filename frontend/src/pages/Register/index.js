@@ -57,7 +57,7 @@ const Register = () => {
         // if register was successful, redirect to login
         if (res.data === 'Registered into DB successfully!') {
             setResStatus(200);
-            setDialogText('User successfully registered!');
+            setDialogText('User successfully registered! Check your inbox to finalise the process.');
             handleOpen();
         }
         
@@ -123,7 +123,7 @@ const Register = () => {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose} color="primary">
+                        <Button onClick={handleClose} color='primary'>
                             Okay
                         </Button>
                     </DialogActions>

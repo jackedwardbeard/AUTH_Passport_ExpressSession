@@ -1,0 +1,17 @@
+.sendResetEmailRow1 {
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    padding: 30px 0;
+    min-height: 400px;
+    text-align: center;
+}
+
+.sendResetEmailText {
+    color: white;
+    font-size: max(0.75rem, 1.75vmin);
+    margin: 5px;
+}

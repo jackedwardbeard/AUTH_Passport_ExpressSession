@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
-import { UserContext } from '../../Context/User'
 import Button from '@material-ui/core/Button'
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import './index.css'
@@ -11,14 +10,11 @@ const ConfirmEmail = (props) => {
     // for determining whether to redirect after closing the dialog pop-up or not
     const history = useHistory();
 
-    // fetch user details from global 'useContext' state
-    const [user, setUser] = useContext(UserContext);
+    // get user ID ( {userid: 'example-id-here'} ) passed as parameter to this page
+    const userID = props.match.params;
 
     // determine whether to redirect after closing dialog pop-up or not
     const [resStatus, setResStatus] = useState(null);
-
-    // get user ID ( {userid: "example-id-here"} ) passed as parameter to this page
-    const userID = props.match.params;
 
     // for dialog pop-ups
     const [open, setOpen] = useState(false);
@@ -44,9 +40,9 @@ const ConfirmEmail = (props) => {
 
         const res = await axios.post('http://localhost:5000/confirmEmail', userID);
             
-        if (res.data === "Email successfully confirmed!") {
+        if (res.data === 'Email successfully confirmed!') {
             setResStatus(200);
-            setDialogText('Successfully confirmed email.');
+            setDialogText('Email successfully confirmed!');
             handleOpen()
         }
 
@@ -58,6 +54,7 @@ const ConfirmEmail = (props) => {
     }
 
     return (
+
         <div className='pageContainer'>
             <div className='confirmEmailRow1'>
                 <p className='title'>Email Confirmation</p>
@@ -77,12 +74,13 @@ const ConfirmEmail = (props) => {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose} color="primary">
+                        <Button onClick={handleClose} color='primary'>
                             Okay
                         </Button>
                     </DialogActions>
             </Dialog>
         </div>
+
     )
 }
 

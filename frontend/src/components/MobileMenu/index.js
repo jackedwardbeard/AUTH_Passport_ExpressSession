@@ -32,15 +32,15 @@ const MobileMenu = ({clicked, reverseState}) => {
                             // if user is logged in, show home and logout links
                             user ?
                             <>
-                                <Link className='mobileLink' to="/" onClick={reverseState}>Home</Link>
+                                <Link className='mobileLink' to='/' onClick={reverseState}>Home</Link>
                                 <Link className='mobileLink' onClick={logout}>Logout</Link>
                             </>
                             :
                             // otherwise show home, register and login links
                             <>
-                                <Link className='mobileLink' to="/" onClick={reverseState}>Home</Link>
-                                <Link className='mobileLink' to="/register" onClick={reverseState}>Register</Link>
-                                <Link className='mobileLink' to="/login" onClick={reverseState}>Login</Link>
+                                <Link className='mobileLink' to='/' onClick={reverseState}>Home</Link>
+                                <Link className='mobileLink' to='/register' onClick={reverseState}>Register</Link>
+                                <Link className='mobileLink' to='/login' onClick={reverseState}>Login</Link>
                             </>
                         }
                     </ul>

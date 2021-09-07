@@ -10,6 +10,7 @@ const Landing = () => {
     console.log('landing user:', user);
 
     return (
+
         <div className='pageContainer'>
             <div className='landingRow1'>
                 {
@@ -31,6 +32,7 @@ const Landing = () => {
                 }
             </div>
         </div>
+        
         )
 };
 
