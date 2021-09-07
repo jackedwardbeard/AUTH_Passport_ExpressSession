@@ -1,4 +1,4 @@
-# MERN_Authentication
+# AUTH_Passport_ExpressSession - MERN stack
 A MERN stack which uses Express-Session + Passport.js for local authentication.
 * Note: req.user is shorthand/equivalent to req.session.user (using expression session).
 
@@ -19,9 +19,9 @@ You need to create a backend .env file containing values for:
 * Following the link in the confirmation email brings you to a confirmation page, where you can click a button to confirm your email
 * Successfully confirmation of your email will redirect you to the login page, whilst an unsucessful confirmation (i.e., already confirmed, or no user found for given ID) will leave you on the confirmation page
 * Allows local login (successful if email/password combination is found in DB)
-* Allows persistent login (e.g, if you refresh the page after logging in, you will still be logged in, until your browser's localStorage has been cleared).
+* Allows persistent login (e.g, if you refresh the page after logging in, you will still be logged in, as long as the server is still running).
 * On login page, offers a 'forgot password?' option, which takes you to a page where you can enter an email to send a password reset email to. Following the link will take you to a page where you can reset your password (if the new password and confirmed new password match)
-* Allows logout (deletes refresh token and removes localStorage/user global state data)
+* Allows logout (ends express session)
 
 # To-Dos / Improvements
 - Add more passport strategies (e.g. a google strategy for logging in/registering with google instead of a local email/password)
