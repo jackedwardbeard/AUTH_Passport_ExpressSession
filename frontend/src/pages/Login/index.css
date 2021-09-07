@@ -34,6 +34,7 @@
 .link {
     text-decoration: none;
     color: white;
+    text-align: center;
 }
 
 .link:hover {
