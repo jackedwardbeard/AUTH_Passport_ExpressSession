@@ -108,9 +108,7 @@ const Register = () => {
                     onChange={e => setRegisterConfirmPassword(e.target.value)}
                 />
                 <Button variant='contained' onClick={register} style={{margin: '30px'}}>Register</Button>
-                <a className='register_link'>
-                    <Link to='/login'>Already a member? Sign in.</Link>
-                </a>
+                <Link className='link' to='/login'>Already a member? Sign in.</Link>
             </form>
             <Dialog
                 open={open}
