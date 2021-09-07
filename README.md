@@ -1,5 +1,5 @@
 # MERN_Authentication
-A local authentication system Using a React/Node/Express/MongoDB stack.
+A MERN stack which uses Express-Session + Passport.js for local authentication.
 * Note: req.user is shorthand/equivalent to req.session.user (using expression session).
 
 # To make it work
