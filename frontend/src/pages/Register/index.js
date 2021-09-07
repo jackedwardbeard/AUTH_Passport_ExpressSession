@@ -52,21 +52,18 @@ const Register = () => {
             confirmPassword: registerConfirmPassword
         };
 
-        const res = await axios.post('http://localhost:5000/register', data, { withCredentials: true });
-        
-        // if register was successful, redirect to login
-        if (res.data === 'Registered into DB successfully!') {
+        await axios.post('http://localhost:5000/register', data, { withCredentials: true })
+        .then((res) => {
+            console.log(res);
             setResStatus(200);
             setDialogText('User successfully registered! Check your inbox to finalise the process.');
             handleOpen();
-        }
-        
-        else {
-            setDialogText('That email is already taken!');
+        })
+        .catch((err) => {
+            console.log(err.response);
+            setDialogText(err.response.data);
             handleOpen();
-        }
-
-        console.log(res);
+        })
 
     };
 

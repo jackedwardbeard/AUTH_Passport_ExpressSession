@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import './index.css'
-import logo from '../../images/smiley.png'
+import logo from '../../Images/smiley.png'
 import {FaBars} from 'react-icons/fa' // mobile menu icon
 import axios from 'axios'
 import { UserContext } from '../../Context/User'
@@ -15,13 +15,15 @@ const Navbar = ({reverseState}) => {
     const logout = async(e) => {
         e.preventDefault()
 
-        const res = await axios.get('http://localhost:5000/logout', {withCredentials: true});
-        console.log(res);
-
-        // reset global state user
-        if (res.status === 200) {
+        await axios.get('http://localhost:5000/logout', {withCredentials: true})
+        .then((res) => {
+            console.log(res);
             setUser(null);
-        }   
+        })
+        .catch((err) => {
+            console.log(err.response);
+        })
+        
     }
 
     return (

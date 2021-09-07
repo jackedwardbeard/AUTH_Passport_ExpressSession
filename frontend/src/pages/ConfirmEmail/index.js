@@ -38,18 +38,18 @@ const ConfirmEmail = (props) => {
     // confirm the given user ID's email upon button click
     const confirmUser = async() => {
 
-        const res = await axios.post('http://localhost:5000/confirmEmail', userID);
-            
-        if (res.data === 'Email successfully confirmed!') {
+        await axios.post('http://localhost:5000/confirmEmail', userID)
+        .then((res) => {
+            console.log(res);
             setResStatus(200);
             setDialogText('Email successfully confirmed!');
-            handleOpen()
-        }
-
-        else {
-            setDialogText('Email already confirmed!');
-            handleOpen()
-        }
+            handleOpen();
+        })
+        .catch((err) => {
+            console.log(err.response);
+            setDialogText(err.response.data);
+            handleOpen();
+        })
         
     }
 

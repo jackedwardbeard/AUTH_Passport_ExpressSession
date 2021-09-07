@@ -11,11 +11,11 @@ import {
   ConfirmEmail,
   SendResetEmail,
   PasswordChange
-} from './pages/pageExports'
+} from './Pages/PageExports'
 import {
   Navbar,
   MobileMenu
-} from './components/componentExports'
+} from './Components/ComponentExports'
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { UserContext } from './Context/User'

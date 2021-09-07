@@ -13,13 +13,14 @@ const MobileMenu = ({clicked, reverseState}) => {
     const logout = async(e) => {
         e.preventDefault()
 
-        const res = await axios.get('http://localhost:5000/logout', {withCredentials: true});
-        console.log(res);
-
-        // reset global state user
-        if (res.status === 200) {
+        await axios.get('http://localhost:5000/logout', {withCredentials: true})
+        .then((res) => {
+            console.log(res);
             setUser(null);
-        }   
+        })
+        .catch((err) => {
+            console.log(err.response);
+        })
     }
     
     return (

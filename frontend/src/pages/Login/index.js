@@ -51,24 +51,26 @@ const Login = () => {
 
         // only allow login if a user isn't already logged in
         if (!user) {
-            const res = await axios.post('http://localhost:5000/login', data, {withCredentials: true});
+
+            const headers = {
+                withCredentials: true
+            }
             
-            // if login was successful (an object containing user details is returned)
-            if (typeof res.data === 'object') {
-                // update global user state to the newly logged in user
-                setUser(res.data);
+            await axios.post('http://localhost:5000/login', data, headers)
+            .then((res) => {
+                console.log(res);
+                // save the user object into context too
+                setUser(res.data); 
                 setResStatus(200);
                 setDialogText('Successfully logged in!');
                 handleOpen();
-            }
-
-            // login was unsuccessful
-            else {
-                setDialogText('Your email or password is incorrect!');
+            })
+            .catch((err) => {
+                console.log(err.response);
+                setDialogText(err.response.data);
                 handleOpen();
-            }
-
-            console.log(res);
+            })
+           
         }
         
         else {

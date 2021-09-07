@@ -33,21 +33,22 @@ const SendResetEmail = () => {
     }
 
     const sendResetEmail = async() => {
-        // take email entered into input box
-        const res = await axios.post('http://localhost:5000/sendResetEmail', {
+        const data = {
             'email': email
-        });
-
-        if (res.data === 'An email containing instructions on how to reset your password has been sent.') {
+        }
+        // take email entered into input box
+        await axios.post('http://localhost:5000/sendResetEmail', data)
+        .then((res) => {
+            console.log(res);
             setResStatus(200);
             setDialogText('An email containing instructions on how to reset your password has been sent.');
             handleOpen();
-        }
-
-        else {
-            setDialogText('No account found with that email.');
+        })
+        .catch((err) => {
+            console.log(err.response);
+            setDialogText(err.response.data);
             handleOpen();
-        }
+        })
     }
 
     return (

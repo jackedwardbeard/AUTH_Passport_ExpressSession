@@ -41,32 +41,32 @@ const PasswordChange = (props) => {
 
         // if passwords match
         if (newPassword === confirmNewPassword) {
-            const res = await axios.post('http://localhost:5000/passwordChange', {
+            const data = {
                 'newPassword': newPassword,
                 'userid': userID
-            })
-
-            // if password successfully updated
-            if (res.data === 'Password successfully updated!') {
-                setResStatus(200);
-                setDialogText('Password successfully updated!');
-                handleOpen();
             }
-
-            // user could not be found with given userID
-            else if (res.data === 'Invalid userID provided.') {
-                setDialogText('Invalid userID provided.');
-                handleOpen();
+    
+            // if passwords match
+            if (newPassword === confirmNewPassword) {
+                await axios.post('http://localhost:5000/passwordChange', data)
+                .then((res) => {
+                    console.log(res);
+                    setResStatus(200);
+                    setDialogText('Password successfully updated!');
+                    handleOpen();
+                })
+                .catch((err) => {
+                    console.log(err.response);
+                    setDialogText(err.response.data);
+                    handleOpen();
+                })
+    
             }
-
-            else {
-                setDialogText('An error occurred!');
-                handleOpen();
-            }
+    
         }
 
         // passwords mismatch
-        if (newPassword !== confirmNewPassword) {
+        else {
             setDialogText('Passwords mismatch!');
             handleOpen();
         }

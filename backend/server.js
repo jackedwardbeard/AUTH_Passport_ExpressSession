@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs'); // hashing/salting passwords
 const session = require('express-session'); // maintain user sessions
 const cookieParser = require('cookie-parser'); // parse cookies
 const User = require('./user') // db schema for a user
-const {sendConfirmationEmail, sendPasswordResetEmail} = require('./sendEmail'); // different templates for sending emails
+const { sendConfirmationEmail, sendPasswordResetEmail } = require('./sendEmail'); // different templates for sending emails
 
 // enable environment variables
 require('dotenv').config()
@@ -54,7 +54,7 @@ app.post('/login', (req, res, next) => {
 
         // if authentication failed
         if (!user) {
-            res.send('Your email or password is incorrect.')
+            res.status(400).send('Your email or password is incorrect.')
         }
 
         // if authentication was successful
@@ -67,7 +67,7 @@ app.post('/login', (req, res, next) => {
 
                 // if no errors, log in is successful, send user details to client
                 console.log('You have been authenticated! Hello there!');
-                res.send({'id': req.user.id, 'firstName': req.user.firstName, 'lastName': req.user.lastName, 'email': req.user.email, 'confirmedEmail': req.user.confirmedEmail});
+                res.status(200).send({'id': req.user.id, 'firstName': req.user.firstName, 'lastName': req.user.lastName, 'email': req.user.email, 'confirmedEmail': req.user.confirmedEmail});
             })
         }
     }) (req, res, next);
@@ -81,12 +81,12 @@ app.post('/register', (req, res) => {
     User.findOne({email: req.body.email}, async (err, doc) => {
 
         if (err) {
-            res.send(err);
+            res.status(400).send(err);
         };
 
         // if user already exists, don't register
         if (doc) {
-            res.send('A user already exists with that email!');
+            res.status(400).send('A user already exists with that email!');
         }
 
         // if user doesn't exist, register a new user
@@ -112,11 +112,11 @@ app.post('/register', (req, res) => {
                 // send confirmation email with email address and uuid attached
                 sendConfirmationEmail(req.body.email, savedNewUser._id);
 
-                res.send('Registered into DB successfully!');
+                res.status(200).send('Registered into DB successfully!');
             }
             
             else {
-                res.send('Passwords mismatch! Could not register.')
+                res.status(400).send('Passwords mismatch! Could not register.')
             }
         }
     });
@@ -138,7 +138,7 @@ app.post('/confirmEmail', (req, res) => {
     User.findById(userID, (err, result) => {
 
         if (err) {
-            res.send("Error");
+            res.status(400).send(err);
         }
 
         else {
@@ -157,7 +157,7 @@ app.post('/confirmEmail', (req, res) => {
                       } 
                       else {
                         console.log(result);
-                        res.send('Email successfully confirmed!');
+                        res.status(200).send('Email successfully confirmed!');
                       }
                     }
                 );
@@ -165,7 +165,7 @@ app.post('/confirmEmail', (req, res) => {
         
             // if it has been confirmed already
             else {
-                res.send('Email already confirmed!');
+                res.status(400).send('Email already confirmed!');
             }
         }
     });
@@ -186,7 +186,7 @@ app.post('/sendResetEmail', (req, res) => {
     User.find({email: email}, (err, result) => {
         
         if (err) {
-            res.send('An error occured.');
+            res.status(400).send(err);
         }
 
         else {
@@ -200,12 +200,12 @@ app.post('/sendResetEmail', (req, res) => {
                 // send a password reset email with their userID as the URL parameter
                 sendPasswordResetEmail(email, userID);
                 
-                res.send('An email containing instructions on how to reset your password has been sent.');
+                res.status(200).send('An email containing instructions on how to reset your password has been sent.');
             }
 
             else {
                 // if no user was found
-                res.send('No account was found linked to that email.');
+                res.status(400).send('No account was found linked to that email.');
             }   
         }
     })
@@ -227,18 +227,19 @@ app.post('/passwordChange', async(req, res) => {
 
         if (err) {
             console.log('An error occurred.');
+            res.status(400).send(err);
         }
     
         else {
         
             // if user found
             if (result) {
-                res.send('Password successfully updated!');
+                res.status(200).send('Password successfully updated!');
             }
 
             // no user could be found with the given req userID
             else {
-                res.send('Invalid userID provided.');
+                res.status(400).send('Invalid userID provided.');
             }
         }
         
@@ -254,7 +255,7 @@ app.get('/getUser', (req, res) => {
 // log the user out (end the express session)
 app.get('/logout', (req, res) => {
     req.logout(req.user)
-    res.send('You have successfully logged out!')
+    res.status(200).send('You have successfully logged out!')
 })
 
 // make the server listen to a specific port (5000 in this case)
