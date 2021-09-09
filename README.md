@@ -6,9 +6,9 @@ A MERN stack which uses Express-Session + Passport.js for local authentication.
 You need to create a backend .env file containing values for:
 * MONGO_URL=yourMongoDBConnectionStringHere
 * CLIENT_URL=http://localhost:3000
-* EMAIL_USER=YourGmailAddress
-* EMAIL_PASS=YourGmailPassword
-* SECRET=AnySecret
+* EMAIL_USER=yourGmailAddress
+* EMAIL_PASS=yourGmailPassword
+* SECRET=anySecret
 
 # Authentication Technique
 * Express-Session (server-based sessions) + Passport.js for authenticating local logins
