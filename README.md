@@ -18,14 +18,17 @@ You need to create a backend .env file containing values for:
 * Upon successful register (successful if provided email isn't taken/found in DB), send a confirmation email to the given email address
 * Following the link in the confirmation email brings you to a confirmation page, where you can click a button to confirm your email
 * Successfully confirmation of your email will redirect you to the login page, whilst an unsucessful confirmation (i.e., already confirmed, or no user found for given ID) will leave you on the confirmation page
-* Allows local login (successful if email/password combination is found in DB)
+* Allows local login (successful if email/password combination is found in DB, a session is created and stored in the session table)
 * Allows persistent login (e.g, if you refresh the page after logging in, you will still be logged in, as long as the server is still running).
 * On login page, offers a 'forgot password?' option, which takes you to a page where you can enter an email to send a password reset email to. Following the link will take you to a page where you can reset your password (if the new password and confirmed new password match)
-* Allows logout (ends express session)
+* Allows logout (ends express session for that user)
 
 # To-Dos / Improvements
 - Add more passport strategies (e.g. a google strategy for logging in/registering with google instead of a local email/password)
-- Add input validation (not the focus of this repo, so I probably won't implement this). Currently you can enter anything into the any input fields.
+- Add input validation (not the focus of this repo, so I probably won't implement this). Currently you can enter anything into any input field.
+
+# Weaknesses
+- Sessions are stored server side, which can be bad if the number of users logged in at the same time grows too high. 
 
 # To start frontend
 ```bash
