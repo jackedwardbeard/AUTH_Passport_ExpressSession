@@ -1,13 +1,13 @@
-const User = require("./user");
-const bcrypt = require("bcryptjs");
-const localStrategy = require("passport-local").Strategy;
+const User = require('./user');
+const bcrypt = require('bcryptjs');
+const localStrategy = require('passport-local').Strategy;
 
 module.exports = (passport) => {
     
     passport.use(
 
         // set up a local strategy for authenticating a login request
-        new localStrategy({usernameField: "email", passwordField: "password"}, (email, password, done) => {
+        new localStrategy({usernameField: 'email', passwordField: 'password'}, (email, password, done) => {
         
             // look for an email in our DB matching the form email input
             User.findOne({ email: email }, (err, user) => {

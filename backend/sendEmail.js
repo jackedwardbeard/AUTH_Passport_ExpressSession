@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 const sendConfirmationEmail = (emailAddress, userID) => {
     // smtp is used to send the email, with the given credentials as the sender
     const smtpTransport = nodemailer.createTransport({
-        service: "Gmail",
+        service: 'Gmail',
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS,
@@ -13,9 +13,9 @@ const sendConfirmationEmail = (emailAddress, userID) => {
 
     // structure the email to send
     const email = {
-        from: "Auth Demo App", // sender address
+        from: 'Auth Demo App', // sender address
         to: emailAddress, // receiver address(es)
-        subject: "AUTH DEMO: Confirm Your Email", // subject line
+        subject: 'AUTH DEMO: Confirm Your Email', // subject line
         html: `
         Thanks for registering. To finalise the process,
         <a href='${process.env.CLIENT_URL}/confirm/${userID}'>
@@ -34,7 +34,7 @@ const sendConfirmationEmail = (emailAddress, userID) => {
 
         // if successful
         else {
-            console.log("Email sent successfully!");
+            console.log('Email sent successfully!');
         }
 
         smtpTransport.close();
@@ -45,7 +45,7 @@ const sendConfirmationEmail = (emailAddress, userID) => {
 const sendPasswordResetEmail = (emailAddress, userID) => {
     // smtp is used to send the email, with the given credentials as the sender
     const smtpTransport = nodemailer.createTransport({
-        service: "Gmail",
+        service: 'Gmail',
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS,
@@ -54,9 +54,9 @@ const sendPasswordResetEmail = (emailAddress, userID) => {
 
     // structure the email to send
     const email = {
-        from: "Auth Demo App", // sender address
+        from: 'Auth Demo App', // sender address
         to: emailAddress, // receiver address(es)
-        subject: "AUTH DEMO: You Requested A Change Of Password", // subject line
+        subject: 'AUTH DEMO: You Requested A Change Of Password', // subject line
         html: `
         If it was you who requested this change,
         <a href='${process.env.CLIENT_URL}/passwordchange/${userID}'>
@@ -75,7 +75,7 @@ const sendPasswordResetEmail = (emailAddress, userID) => {
 
         // if successful
         else {
-            console.log("Email sent successfully!");
+            console.log('Email sent successfully!');
         }
 
         smtpTransport.close();
